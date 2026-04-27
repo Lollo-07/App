@@ -1,0 +1,42 @@
+<SchermataHome>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        md_bg_color: 0, 0, 0, 1
+        
+
+        Label:
+            text: "HOME"
+            font_size: sp(32)
+            size_hint: 0.8, 0.3
+            pos_hint: {"center_x": 0.5}
+
+
+        ScrollView:
+            GridLayout:
+                id: contenitore
+                cols: 3
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(10)
+                padding: dp(10)
+
+        
+        Widget:
+            size_hint: 1, 0.08
+
+
+        MDRaisedButton:
+            text: "Aggiungi"
+            size_hint: 0.4, 0.12
+            pos_hint: {"center_x": 0.5}
+            on_press: root.aggiungi_categoria()
+
+        
+        Widget:
+            size_hint: 1, 0.3
+
+            
+            
+
+
