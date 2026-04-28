@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <SchermataRegistrati>:
     MDBoxLayout:
         orientation: "vertical"
@@ -71,3 +72,78 @@
         Widget:
             size_hint: 1, 0.2
             
+=======
+<SchermataRegistrati>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        md_bg_color: 0, 0, 0, 1
+        
+
+        Label:
+            text: "REGISTRATI"
+            font_size: sp(32)
+            size_hint: 0.8, 0.3
+            pos_hint: {"center_x": 0.5}
+
+
+        TextInput:
+            id: nome_input
+            hint_text: "Nome"
+            multiline: False
+            size_hint: 0.8, 0.08
+            pos_hint: {"center_x": 0.5}
+
+
+        Widget:
+            size_hint: 1, 0.02
+
+
+        
+        TextInput:
+            id: cognome_input
+            hint_text: "Cognome"
+            multiline: False
+            size_hint: 0.8, 0.08
+            pos_hint: {"center_x": 0.5}
+
+
+        Widget:
+            size_hint: 1, 0.02
+            
+
+        TextInput:
+            id: username_input
+            hint_text: "Username"
+            multiline: False
+            size_hint: 0.8, 0.08
+            pos_hint: {"center_x": 0.5}
+
+
+        Widget:
+            size_hint: 1, 0.02
+
+
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+            size_hint: 0.8, 0.08
+            pos_hint: {"center_x": 0.5}
+
+
+        Widget:
+            size_hint: 1, 0.02
+
+        Button:
+            text: "Registrati"
+            size_hint: 0.4, 0.08
+            pos_hint: {"center_x": 0.5}
+            on_press: root.registrati()
+
+        
+        Widget:
+            size_hint: 1, 0.2
+            
+>>>>>>> 237a259cf9f51efbfdef5274ffc5afab155680ee

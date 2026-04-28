@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <SchermataLogin>:
     MDBoxLayout:
         orientation: "vertical"
@@ -46,3 +47,53 @@
         Widget:
             size_hint: 1, 0.3
             
+=======
+<SchermataLogin>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        md_bg_color: 0, 0, 0, 1
+        
+
+        Label:
+            text: "LOGIN"
+            font_size: sp(32)
+            size_hint: 0.8, 0.3
+            pos_hint: {"center_x": 0.5}
+            
+
+        TextInput:
+            id: username_input
+            hint_text: "Username"
+            multiline: False
+            size_hint: 0.8, 0.08
+            pos_hint: {"center_x": 0.5}
+
+
+        Widget:
+            size_hint: 1, 0.04
+
+
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+            size_hint: 0.8, 0.08
+            pos_hint: {"center_x": 0.5}
+
+
+        Widget:
+            size_hint: 1, 0.08
+
+        Button:
+            text: "Accedi"
+            size_hint: 0.4, 0.12
+            pos_hint: {"center_x": 0.5}
+            on_press: root.login()
+
+        
+        Widget:
+            size_hint: 1, 0.3
+            
+>>>>>>> 237a259cf9f51efbfdef5274ffc5afab155680ee
