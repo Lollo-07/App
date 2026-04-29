@@ -24,3 +24,15 @@ class MyApp(MDApp):
         return sm
     
 MyApp().run()
+
+
+
+
+
+
+
+'''
+git add .
+git commit -m "..."
+git push
+'''
