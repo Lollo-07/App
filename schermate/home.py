@@ -7,13 +7,15 @@ from kivymd.uix.textfield import MDTextField
 from kivymd.uix.button import MDFlatButton
 
 
-from config.db_conn import db_conn
+import requests
 from config.sessione import Sessione
 
 Builder.load_file("kv/home.kv")
 
 
 class SchermataHome(Screen):
+
+    url_api = "http://192.168.80.1/prova_app/categorie.php"
     
     def on_pre_enter(self):                 #Controllo se ha fatto il login, se non l'ha fatto torna nella pagina login
         if not Sessione.logged:
@@ -23,40 +25,50 @@ class SchermataHome(Screen):
             
             
     def home(self):
-        conn = db_conn()
-        cursor = conn.cursor()
         
-        cursor.execute(
-            "SELECT id, ambito FROM ambito A WHERE A.user_id = %s",
-            (Sessione.id,)
-        )
+        dati = {
+            "azione": "lista",
+            "user_id": Sessione.id
+        }
         
-        rows = cursor.fetchall()
-        
-        conn.close()
-        
-        contenitore = self.ids.contenitore
-        contenitore.clear_widgets()
-        
-        for ambito in rows:
-            card = MDCard(
-                size_hint_y=None,
-                height=80,
-                padding=10,
-                radius=[15]
-            )
+        risposta = requests.post(self.url_api, json=dati, timeout=5)
 
-            label = MDLabel(
-                text=ambito[1],
-                halign="center"
-            )
+        if risposta.status_code == 200:
+            json_data = risposta.json()
 
-            card.add_widget(label)
-            
-            card.bind(on_touch_down=lambda instance, touch, id_db=ambito[0]:        #Quando clicco una card prende l'istanza e la posizione del tocco
-                self.elimina_categoria(instance, touch, id_db))
-            
-            contenitore.add_widget(card)
+            if json_data["success"]:
+                categorie = json_data["categorie"]
+
+                contenitore = self.ids.contenitore
+                contenitore.clear_widgets()
+
+                for ambito in categorie:
+                    card = MDCard(
+                        size_hint_y=None,
+                        height=80,
+                        padding=10,
+                        radius=[15]
+                    )
+
+                    label = MDLabel(
+                        text=ambito["ambito"],
+                        halign="center"
+                    )
+
+                    card.add_widget(label)
+
+                    card.bind(
+                        on_touch_down=lambda instance, touch, id_db=ambito["id"]:
+                            self.elimina_categoria(instance, touch, id_db)
+                    )
+
+                    contenitore.add_widget(card)
+
+            else:
+                print("Errore caricamento categorie")
+
+        else:
+            print("Errore server:", risposta.status_code)    
         
         
             
@@ -89,21 +101,31 @@ class SchermataHome(Screen):
         
     
     def aggiungi_categoria_db(self, *args):     #Kivy passa automaticamente il bottone, quindi lo prendo anche se non mi serve
-        conn = db_conn()
-        cursor = conn.cursor()
         
-        categoria = self.input_categoria.text.strip()  #Toglie gli spazi dal testo
 
-        cursor.execute(
-            "INSERT INTO ambito (user_id, ambito) VALUES (%s, %s)",
-            (Sessione.id, categoria)
-        )
+        categoria = self.input_categoria.text.strip()
 
-        conn.commit()
-        conn.close()
+        dati = {
+            "azione": "aggiungi",
+            "user_id": Sessione.id,
+            "ambito": categoria
+        }
+
         
-        self.dialog.dismiss()
-        self.home()
+        risposta = requests.post(self.url_api, json=dati, timeout=5)
+
+        if risposta.status_code == 200:
+            json_data = risposta.json()
+
+            if json_data["success"]:
+                self.dialog.dismiss()
+                self.home()
+            else:
+                print("Errore aggiunta categoria")
+
+        else:
+            print("Errore server:", risposta.status_code)
+        
         
         
     
@@ -112,11 +134,20 @@ class SchermataHome(Screen):
         if not card.collide_point(*touch.pos):
             return
         
-        conn = db_conn()
-        cursor = conn.cursor()
-
-        cursor.execute("DELETE FROM ambito WHERE id = %s", (ambito_id,))
-        conn.commit()
-        conn.close()
+        dati = {
+            "azione": "elimina",
+            "ambito_id": ambito_id
+        }
         
-        self.home()
+        risposta = requests.post(self.url_api, json=dati, timeout=5)
+
+        if risposta.status_code == 200:
+            json_data = risposta.json()
+            
+            if json_data["success"]:
+                self.home()
+            else:
+                print("Errore eliminazione")
+
+        else:
+            print("Errore server:", risposta.status_code)

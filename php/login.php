@@ -1,7 +1,7 @@
 <?php
-header("Content-Type: application/json");
+header("Content-Type: application/json");      #Dice al client che la risposta è in formato JSON
 
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), true);      #Prende i dati inviati in POST con JSON e li mette in un array
 
 $conn = new mysqli("localhost", "root", "", "prova_app");
 
