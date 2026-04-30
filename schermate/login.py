@@ -14,7 +14,7 @@ class SchermataLogin(Screen):
         username = self.ids.username_input.text
         password = self.ids.password_input.text
         
-        url = "http://192.168.80.1/prova_app/login.php"          #Qua va messo l'IP della macchina con il server Apache attivo
+        url = "http://192.168.190.1/prova_app/login.php"          #Qua va messo l'IP della macchina con il server Apache attivo
         
         dati = {                                        #Preparo i dati da mandare al server, li gestisce lui con i file php
             "username": username,
@@ -27,7 +27,7 @@ class SchermataLogin(Screen):
             json_data = risposta.json()
 
             if json_data["success"]:
-                Sessione.login_session(json_data["id"], json_data["username"], password)
+                Sessione.login_session(json_data["idUtente"], json_data["username"], password)
                 print("Benvenuto")
                 self.manager.current = "home"
             else:

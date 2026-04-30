@@ -15,7 +15,7 @@ Builder.load_file("kv/home.kv")
 
 class SchermataHome(Screen):
 
-    url_api = "http://192.168.80.1/prova_app/categorie.php"
+    url_api = "http://192.168.190.1/prova_app/categorie.php"
     
     def on_pre_enter(self):                 #Controllo se ha fatto il login, se non l'ha fatto torna nella pagina login
         if not Sessione.logged:
@@ -28,7 +28,7 @@ class SchermataHome(Screen):
         
         dati = {
             "azione": "lista",
-            "user_id": Sessione.id
+            "idUtente": Sessione.id
         }
         
         risposta = requests.post(self.url_api, json=dati, timeout=5)
@@ -42,7 +42,7 @@ class SchermataHome(Screen):
                 contenitore = self.ids.contenitore
                 contenitore.clear_widgets()
 
-                for ambito in categorie:
+                for categoria in categorie:
                     card = MDCard(
                         size_hint_y=None,
                         height=80,
@@ -51,14 +51,14 @@ class SchermataHome(Screen):
                     )
 
                     label = MDLabel(
-                        text=ambito["ambito"],
+                        text=categoria["categoria"],
                         halign="center"
                     )
 
                     card.add_widget(label)
 
                     card.bind(
-                        on_touch_down=lambda instance, touch, id_db=ambito["id"]:
+                        on_touch_down=lambda instance, touch, id_db=categoria["idCategoria"]:
                             self.elimina_categoria(instance, touch, id_db)
                     )
 
@@ -76,12 +76,12 @@ class SchermataHome(Screen):
     def aggiungi_categoria(self):
         
         self.input_categoria = MDTextField(         #Aggiungo il self così posso vedere la variabile nella funzione per il db
-            hint_text="Inserisci ambito",
+            hint_text="Inserisci categoria",
             mode="rectangle"
         )
         
         self.dialog = MDDialog(                      #Crea una finestra popup con il classico salva/annulla
-            title="Nuovo ambito",
+            title="Nuova categoria",
             type="custom",
             content_cls=self.input_categoria,
             buttons=[
@@ -107,8 +107,8 @@ class SchermataHome(Screen):
 
         dati = {
             "azione": "aggiungi",
-            "user_id": Sessione.id,
-            "ambito": categoria
+            "idUtente": Sessione.id,
+            "categoria": categoria
         }
 
         
@@ -129,14 +129,14 @@ class SchermataHome(Screen):
         
         
     
-    def elimina_categoria(self, card, touch, ambito_id):
+    def elimina_categoria(self, card, touch, idCategoria):
         
         if not card.collide_point(*touch.pos):
             return
         
         dati = {
             "azione": "elimina",
-            "ambito_id": ambito_id
+            "idCategoria": idCategoria
         }
         
         risposta = requests.post(self.url_api, json=dati, timeout=5)
