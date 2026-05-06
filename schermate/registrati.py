@@ -14,7 +14,7 @@ class SchermataRegistrati(Screen):
         username = self.ids.username_input.text
         password = self.ids.password_input.text
         
-        url = "http://192.168.80.1/prova_app/registrati.php"
+        url = "http://192.168.190.1/prova_app/registrati.php"
        
        
         dati = {

@@ -7,23 +7,30 @@ $azione = $data["azione"];
 $conn = new mysqli("localhost", "root", "", "prova_app");
 
 if ($azione === "lista") {
-    $stmt = $conn->prepare("SELECT id, ambito FROM ambito WHERE user_id = ?");
-    $stmt->bind_param("i", $data["user_id"]);
+
+    $stmt = $conn->prepare("SELECT idCategoria, categoria FROM categorie WHERE idUtente = ?");
+    $stmt->bind_param("i", $data["idUtente"]);
     $stmt->execute();
+
     $result = $stmt->get_result();
     $categorie = $result->fetch_all(MYSQLI_ASSOC);
+
     echo json_encode(["success" => true, "categorie" => $categorie]);
 
 } elseif ($azione === "aggiungi") {
-    $stmt = $conn->prepare("INSERT INTO ambito (user_id, ambito) VALUES (?, ?)");
-    $stmt->bind_param("is", $data["user_id"], $data["ambito"]);
+
+    $stmt = $conn->prepare("INSERT INTO categorie (idUtente, categoria) VALUES (?, ?)");
+    $stmt->bind_param("is", $data["idUtente"], $data["categoria"]);
     $stmt->execute();
+
     echo json_encode(["success" => true]);
 
 } elseif ($azione === "elimina") {
-    $stmt = $conn->prepare("DELETE FROM ambito WHERE id = ?");
-    $stmt->bind_param("i", $data["ambito_id"]);
+
+    $stmt = $conn->prepare("DELETE FROM categorie WHERE idCategoria = ?");
+    $stmt->bind_param("i", $data["idCategoria"]);
     $stmt->execute();
+
     echo json_encode(["success" => true]);
 }
 
