@@ -12,3 +12,13 @@ CREATE TABLE Categorie (
     categoria VARCHAR(20) NOT NULL,
     FOREIGN KEY (idUtente) REFERENCES Utente(idUtente)
 );
+
+CREATE TABLE Transazioni (
+    idTransazioni INT AUTO_INCREMENT PRIMARY KEY,
+    prezzo DECIMAL(10,2) NOT NULL,
+    idUtente INT NOT NULL,
+    idCategoria INT NOT NULL,
+    
+    FOREIGN KEY (idUtente) REFERENCES Utente(idUtente),
+    FOREIGN KEY (idCategoria) REFERENCES Categorie(idCategoria)
+);
