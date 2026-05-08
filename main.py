@@ -19,7 +19,7 @@ class MyApp(MDApp):
         sm.add_widget(SchermataRegistrati(name="registrati")) 
         sm.add_widget(SchermataLogin(name="login"))     #Aggiunge una schermata
         sm.add_widget(SchermataHome(name="home")) 
-        sm.current = "registrati"
+        sm.current = "login"
         
         return sm
     

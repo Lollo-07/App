@@ -6,7 +6,6 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.button import MDFlatButton
 
-
 import requests
 from config.sessione import Sessione
 
@@ -15,34 +14,38 @@ Builder.load_file("kv/home.kv")
 
 class SchermataHome(Screen):
 
-    url_api = "http://192.168.190.1/prova_app/categorie.php"
-    
-    def on_pre_enter(self):                 #Controllo se ha fatto il login, se non l'ha fatto torna nella pagina login
+    url_api = "http://10.210.0.194/prova_app/categorie.php"
+
+    def on_pre_enter(self):
         if not Sessione.logged:
             self.manager.current = "login"
         else:
             self.home()
-            
-            
-    def home(self):
-        
-        dati = {
-            "azione": "lista",
-            "idUtente": Sessione.id
-        }
-        
-        risposta = requests.post(self.url_api, json=dati, timeout=5)
 
-        if risposta.status_code == 200:
+    # =========================
+    # GET CATEGORIE
+    # =========================
+    def home(self):
+
+        try:
+            params = {"idUtente": Sessione.id}
+
+            risposta = requests.get(self.url_api, params=params, timeout=5)
+
+            print("DEBUG:", risposta.text)  # <-- utile se qualcosa rompe
+
             json_data = risposta.json()
 
-            if json_data["success"]:
-                categorie = json_data["categorie"]
+            if risposta.status_code == 200 and json_data.get("success"):
 
                 contenitore = self.ids.contenitore
                 contenitore.clear_widgets()
 
-                for categoria in categorie:
+                for cat in json_data["categorie"]:
+
+                    id_cat = cat["idCategoria"]
+                    nome = cat["categoria"]
+
                     card = MDCard(
                         size_hint_y=None,
                         height=80,
@@ -51,43 +54,44 @@ class SchermataHome(Screen):
                     )
 
                     label = MDLabel(
-                        text=categoria["categoria"],
+                        text=nome,
                         halign="center"
                     )
 
                     card.add_widget(label)
 
-                    card.bind(
-                        on_touch_down=lambda instance, touch, id_db=categoria["idCategoria"]:
+                    def callback(instance, touch, id_db=id_cat):
+                        if instance.collide_point(*touch.pos):
                             self.elimina_categoria(instance, touch, id_db)
-                    )
+
+                    card.bind(on_touch_down=callback)
 
                     contenitore.add_widget(card)
 
             else:
-                print("Errore caricamento categorie")
+                print("Errore API:", json_data)
 
-        else:
-            print("Errore server:", risposta.status_code)    
-        
-        
-            
-    
+        except Exception as e:
+            print("Errore GET:", e)
+
+    # =========================
+    # AGGIUNGI
+    # =========================
     def aggiungi_categoria(self):
-        
-        self.input_categoria = MDTextField(         #Aggiungo il self così posso vedere la variabile nella funzione per il db
+
+        self.input_categoria = MDTextField(
             hint_text="Inserisci categoria",
             mode="rectangle"
         )
-        
-        self.dialog = MDDialog(                      #Crea una finestra popup con il classico salva/annulla
+
+        self.dialog = MDDialog(
             title="Nuova categoria",
             type="custom",
             content_cls=self.input_categoria,
             buttons=[
                 MDFlatButton(
                     text="ANNULLA",
-                    on_release=lambda x: self.dialog.dismiss()          #Se schiaccio annulla va via il popup
+                    on_release=lambda x: self.dialog.dismiss()
                 ),
                 MDFlatButton(
                     text="SALVA",
@@ -95,59 +99,52 @@ class SchermataHome(Screen):
                 )
             ]
         )
-        
+
         self.dialog.open()
-        
-        
-    
-    def aggiungi_categoria_db(self, *args):     #Kivy passa automaticamente il bottone, quindi lo prendo anche se non mi serve
-        
+
+    def aggiungi_categoria_db(self, *args):
 
         categoria = self.input_categoria.text.strip()
 
-        dati = {
-            "azione": "aggiungi",
-            "idUtente": Sessione.id,
-            "categoria": categoria
-        }
+        if categoria == "":
+            return
 
-        
-        risposta = requests.post(self.url_api, json=dati, timeout=5)
+        try:
+            dati = {
+                "idUtente": Sessione.id,
+                "categoria": categoria
+            }
 
-        if risposta.status_code == 200:
+            risposta = requests.post(self.url_api, json=dati, timeout=5)
             json_data = risposta.json()
 
-            if json_data["success"]:
+            if risposta.status_code in (200, 201) and json_data.get("success"):
                 self.dialog.dismiss()
                 self.home()
             else:
-                print("Errore aggiunta categoria")
+                print("Errore POST:", json_data)
 
-        else:
-            print("Errore server:", risposta.status_code)
-        
-        
-        
-    
+        except Exception as e:
+            print("Errore POST:", e)
+
+    # =========================
+    # DELETE
+    # =========================
     def elimina_categoria(self, card, touch, idCategoria):
-        
+
         if not card.collide_point(*touch.pos):
             return
-        
-        dati = {
-            "azione": "elimina",
-            "idCategoria": idCategoria
-        }
-        
-        risposta = requests.post(self.url_api, json=dati, timeout=5)
 
-        if risposta.status_code == 200:
+        try:
+            params = {"idCategoria": idCategoria}
+
+            risposta = requests.delete(self.url_api, params=params, timeout=5)
             json_data = risposta.json()
-            
-            if json_data["success"]:
+
+            if risposta.status_code == 200 and json_data.get("success"):
                 self.home()
             else:
-                print("Errore eliminazione")
+                print("Errore DELETE:", json_data)
 
-        else:
-            print("Errore server:", risposta.status_code)
+        except Exception as e:
+            print("Errore DELETE:", e)

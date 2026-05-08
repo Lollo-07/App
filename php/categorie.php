@@ -1,38 +1,111 @@
 <?php
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=UTF-8");
 
-$data = json_decode(file_get_contents("php://input"), true);
-$azione = $data["azione"];
+error_reporting(0);
+ini_set('display_errors', 0);
 
 $conn = new mysqli("localhost", "root", "", "prova_app");
 
-if ($azione === "lista") {
+if ($conn->connect_error) {
+    echo json_encode(["success" => false, "errore" => "Connessione DB fallita"]);
+    exit;
+}
+
+$method = $_SERVER["REQUEST_METHOD"];
+
+/* =========================
+   GET - LISTA CATEGORIE
+========================= */
+if ($method === "GET") {
+
+    if (!isset($_GET["idUtente"])) {
+        echo json_encode(["success" => false, "errore" => "idUtente mancante"]);
+        exit;
+    }
+
+    $idUtente = intval($_GET["idUtente"]);
 
     $stmt = $conn->prepare("SELECT idCategoria, categoria FROM categorie WHERE idUtente = ?");
-    $stmt->bind_param("i", $data["idUtente"]);
+    $stmt->bind_param("i", $idUtente);
     $stmt->execute();
 
-    $result = $stmt->get_result();
-    $categorie = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->bind_result($idCategoria, $categoria);
 
-    echo json_encode(["success" => true, "categorie" => $categorie]);
+    $categorie = [];
 
-} elseif ($azione === "aggiungi") {
+    while ($stmt->fetch()) {
+        $categorie[] = [
+            "idCategoria" => $idCategoria,
+            "categoria" => $categoria
+        ];
+    }
+
+    echo json_encode([
+        "success" => true,
+        "categorie" => $categorie
+    ]);
+
+    exit;
+}
+
+/* =========================
+   POST - AGGIUNGI
+========================= */
+elseif ($method === "POST") {
+
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!$data || !isset($data["idUtente"]) || !isset($data["categoria"])) {
+        echo json_encode(["success" => false, "errore" => "Dati mancanti"]);
+        exit;
+    }
+
+    $idUtente = intval($data["idUtente"]);
+    $categoria = $data["categoria"];
 
     $stmt = $conn->prepare("INSERT INTO categorie (idUtente, categoria) VALUES (?, ?)");
-    $stmt->bind_param("is", $data["idUtente"], $data["categoria"]);
-    $stmt->execute();
+    $stmt->bind_param("is", $idUtente, $categoria);
 
-    echo json_encode(["success" => true]);
+    if ($stmt->execute()) {
+        echo json_encode([
+            "success" => true,
+            "idCategoria" => $conn->insert_id
+        ]);
+    } else {
+        echo json_encode(["success" => false, "errore" => "Errore inserimento"]);
+    }
 
-} elseif ($azione === "elimina") {
+    exit;
+}
+
+/* =========================
+   DELETE - ELIMINA
+========================= */
+elseif ($method === "DELETE") {
+
+    if (!isset($_GET["idCategoria"])) {
+        echo json_encode(["success" => false, "errore" => "idCategoria mancante"]);
+        exit;
+    }
+
+    $idCategoria = intval($_GET["idCategoria"]);
 
     $stmt = $conn->prepare("DELETE FROM categorie WHERE idCategoria = ?");
-    $stmt->bind_param("i", $data["idCategoria"]);
-    $stmt->execute();
+    $stmt->bind_param("i", $idCategoria);
 
-    echo json_encode(["success" => true]);
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "errore" => "Errore eliminazione"]);
+    }
+
+    exit;
 }
+
+/* =========================
+   METODO NON VALIDO
+========================= */
+echo json_encode(["success" => false, "errore" => "Metodo non supportato"]);
 
 $conn->close();
 ?>

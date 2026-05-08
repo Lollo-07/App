@@ -14,7 +14,7 @@ class SchermataLogin(Screen):
         username = self.ids.username_input.text
         password = self.ids.password_input.text
         
-        url = "http://192.168.190.1/prova_app/login.php"          #Qua va messo l'IP della macchina con il server Apache attivo
+        url = "http://10.210.0.194/prova_app/login.php"          #Qua va messo l'IP della macchina con il server Apache attivo
         
         dati = {                                        #Preparo i dati da mandare al server, li gestisce lui con i file php
             "username": username,

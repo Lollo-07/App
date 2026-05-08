@@ -1,42 +1,52 @@
 <SchermataHome>:
     MDBoxLayout:
         orientation: "vertical"
-        padding: dp(20)
         md_bg_color: 0, 0, 0, 1
-        
 
-        Label:
-            text: "HOME"
-            font_size: sp(32)
-            size_hint: 0.8, 0.3
-            pos_hint: {"center_x": 0.5}
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: dp(20)
 
+            Label:
+                text: "HOME"
+                font_size: sp(32)
+                size_hint: 0.8, 0.3
+                pos_hint: {"center_x": 0.5}
 
-        ScrollView:
-            GridLayout:
-                id: contenitore
-                cols: 3
-                size_hint_y: None
-                height: self.minimum_height
-                spacing: dp(10)
-                padding: dp(10)
+            ScrollView:
+                GridLayout:
+                    id: contenitore
+                    cols: 3
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(10)
+                    padding: dp(10)
 
-        
-        Widget:
-            size_hint: 1, 0.08
+            Widget:
+                size_hint: 1, 0.08
 
+            MDRaisedButton:
+                text: "Aggiungi"
+                size_hint: 0.4, 0.12
+                pos_hint: {"center_x": 0.5}
+                on_press: root.aggiungi_categoria()
 
-        MDRaisedButton:
-            text: "Aggiungi"
-            size_hint: 0.4, 0.12
-            pos_hint: {"center_x": 0.5}
-            on_press: root.aggiungi_categoria()
+            Widget:
+                size_hint: 1, 0.1
 
-        
-        Widget:
-            size_hint: 1, 0.3
+        # Barra in fondo
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(10)
+            padding: dp(10)
+            md_bg_color: 0.1, 0.1, 0.1, 1
 
-            
-            
+            MDRaisedButton:
+                text: "Categorie"
+                size_hint_x: 0.5
 
-
+            MDRaisedButton:
+                text: "Transazioni"
+                size_hint_x: 0.5
