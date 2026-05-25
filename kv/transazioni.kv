@@ -1,4 +1,4 @@
-<SchermataHome>:
+<SchermataTransazioni>:
     MDBoxLayout:
         orientation: "vertical"
         md_bg_color: 0.08, 0.08, 0.12, 1
@@ -12,7 +12,7 @@
             spacing: dp(10)
 
             MDIcon:
-                icon: "view-dashboard"
+                icon: "currency-usd"
                 theme_text_color: "Custom"
                 text_color: 0.39, 0.51, 1, 1
                 font_size: sp(28)
@@ -20,7 +20,7 @@
                 width: dp(32)
 
             MDLabel:
-                text: "Home"
+                text: "Transazioni"
                 font_style: "H6"
                 bold: True
                 theme_text_color: "Custom"
@@ -29,11 +29,11 @@
             Widget:
 
             MDIconButton:
-                icon: "logout"
+                icon: "arrow-left"
                 theme_text_color: "Custom"
                 text_color: 0.6, 0.6, 0.6, 1
                 ripple_color: 1, 1, 1, 0.15
-                on_press: root.vai_al_login()
+                on_press: root.manager.current = "home"
 
         ScrollView:
             size_hint: 1, 1
@@ -53,11 +53,11 @@
             md_bg_color: 0.13, 0.13, 0.18, 1
 
             MDRaisedButton:
-                text: "  AGGIUNGI CATEGORIA"
+                text: "  AGGIUNGI TRANSAZIONE"
                 icon: "plus"
                 size_hint_x: 1
                 height: dp(50)
                 md_bg_color: 0.39, 0.51, 1, 1
                 ripple_color: 1, 1, 1, 0.2
                 font_size: sp(14)
-                on_press: root.aggiungi_categoria()
+                on_press: root.aggiungi_transazione()

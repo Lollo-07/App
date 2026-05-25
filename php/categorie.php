@@ -13,9 +13,8 @@ if ($conn->connect_error) {
 
 $method = $_SERVER["REQUEST_METHOD"];
 
-/* =========================
-   GET - LISTA CATEGORIE
-========================= */
+
+
 if ($method === "GET") {
 
     if (!isset($_GET["idUtente"])) {

@@ -1,0 +1,37 @@
+ScreenManager:
+    id: main_manager
+
+    SchermataLogin:
+        name: "login"
+
+    SchermataRegistrati:
+        name: "registrati"
+
+    Screen:
+        name: "main_container"
+        
+        BoxLayout:
+            orientation: "vertical"
+
+            ScreenManager:
+                id: inner_manager
+
+                SchermataHome:
+                    name: "home"
+
+                SchermataTransazioni:
+                    name: "transazioni"
+
+            MDBottomNavigation:
+                size_hint_y: None
+                height: dp(56)
+
+                MDBottomNavigationItem:
+                    text: "Categorie"
+                    icon: "view-list"
+                    on_tab_press: inner_manager.current = "home"
+
+                MDBottomNavigationItem:
+                    text: "Transazioni"
+                    icon: "cash"
+                    on_tab_press: inner_manager.current = "transazioni"

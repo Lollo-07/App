@@ -1,78 +1,84 @@
 from kivy.uix.screenmanager import Screen
-from kivy.lang import Builder
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.button import MDFlatButton
+from threading import Thread
+from kivy.clock import Clock
+from kivy.app import App
 
 import requests
 from config.sessione import Sessione
 
-Builder.load_file("kv/home.kv")
-
 
 class SchermataHome(Screen):
 
-    url_api = "http://10.210.0.194/prova_app/categorie.php"
+    url_api = "http://192.168.1.11/prova_app/categorie.php"
 
     def on_pre_enter(self):
         if not Sessione.logged:
-            self.manager.current = "login"
+            root_manager = self.manager.parent.parent
+            root_manager.current = "login"
         else:
-            self.home()
+            self.load_categorie()
 
     # =========================
     # GET CATEGORIE
     # =========================
-    def home(self):
+    def load_categorie(self):
+        thread = Thread(target=self._load_categorie_thread)
+        thread.start()
 
+    def _load_categorie_thread(self):
         try:
             params = {"idUtente": Sessione.id}
 
             risposta = requests.get(self.url_api, params=params, timeout=5)
 
-            print("DEBUG:", risposta.text)  # <-- utile se qualcosa rompe
+            print("DEBUG:", risposta.text)
 
             json_data = risposta.json()
 
             if risposta.status_code == 200 and json_data.get("success"):
-
-                contenitore = self.ids.contenitore
-                contenitore.clear_widgets()
-
-                for cat in json_data["categorie"]:
-
-                    id_cat = cat["idCategoria"]
-                    nome = cat["categoria"]
-
-                    card = MDCard(
-                        size_hint_y=None,
-                        height=80,
-                        padding=10,
-                        radius=[15]
-                    )
-
-                    label = MDLabel(
-                        text=nome,
-                        halign="center"
-                    )
-
-                    card.add_widget(label)
-
-                    def callback(instance, touch, id_db=id_cat):
-                        if instance.collide_point(*touch.pos):
-                            self.elimina_categoria(instance, touch, id_db)
-
-                    card.bind(on_touch_down=callback)
-
-                    contenitore.add_widget(card)
-
+                # Aggiorna UI dal thread principale
+                Clock.schedule_once(lambda dt: self._aggiorna_ui(json_data["categorie"]), 0)
             else:
                 print("Errore API:", json_data)
 
         except Exception as e:
             print("Errore GET:", e)
+
+    def _aggiorna_ui(self, categorie):
+        """Aggiorna l'interfaccia con le categorie (chiamato dal thread principale)"""
+        contenitore = self.ids.contenitore
+        contenitore.clear_widgets()
+
+        for cat in categorie:
+            id_cat = cat["idCategoria"]
+            nome = cat["categoria"]
+
+            card = MDCard(
+                size_hint_y=None,
+                height=80,
+                padding=10,
+                radius=[15]
+            )
+
+            label = MDLabel(
+                text=nome,
+                halign="center"
+            )
+
+            card.add_widget(label)
+
+            def callback(instance, touch, id_db=id_cat):
+                if instance.collide_point(*touch.pos):
+                    self.elimina_categoria(instance, touch, id_db)
+
+            card.bind(on_touch_down=callback)
+
+            contenitore.add_widget(card)
 
     # =========================
     # AGGIUNGI
@@ -109,6 +115,10 @@ class SchermataHome(Screen):
         if categoria == "":
             return
 
+        thread = Thread(target=self._aggiungi_categoria_thread, args=(categoria,))
+        thread.start()
+
+    def _aggiungi_categoria_thread(self, categoria):
         try:
             dati = {
                 "idUtente": Sessione.id,
@@ -119,8 +129,8 @@ class SchermataHome(Screen):
             json_data = risposta.json()
 
             if risposta.status_code in (200, 201) and json_data.get("success"):
-                self.dialog.dismiss()
-                self.home()
+                Clock.schedule_once(lambda dt: self.dialog.dismiss(), 0)
+                Clock.schedule_once(lambda dt: self.load_categorie(), 0)
             else:
                 print("Errore POST:", json_data)
 
@@ -135,6 +145,10 @@ class SchermataHome(Screen):
         if not card.collide_point(*touch.pos):
             return
 
+        thread = Thread(target=self._elimina_categoria_thread, args=(idCategoria,))
+        thread.start()
+
+    def _elimina_categoria_thread(self, idCategoria):
         try:
             params = {"idCategoria": idCategoria}
 
@@ -142,9 +156,14 @@ class SchermataHome(Screen):
             json_data = risposta.json()
 
             if risposta.status_code == 200 and json_data.get("success"):
-                self.home()
+                Clock.schedule_once(lambda dt: self.load_categorie(), 0)
             else:
                 print("Errore DELETE:", json_data)
 
         except Exception as e:
             print("Errore DELETE:", e)
+        
+        
+
+    def vai_al_login(self):
+        App.get_running_app().root.current = "login"
