@@ -7,6 +7,13 @@ from config.sessione import Sessione
 
 
 class SchermataLogin(Screen):
+    
+    def on_enter(self):
+        Clock.schedule_once(self.clear_fields)
+
+    def clear_fields(self, dt):
+        self.ids.username_input.text = ""
+        self.ids.password_input.text = ""
 
     def login(self):
         username = self.ids.username_input.text.strip()
@@ -22,7 +29,7 @@ class SchermataLogin(Screen):
 
     def _login_thread(self, username, password):
         """Esegue la richiesta HTTP in background"""
-        url = "http://192.168.1.11/prova_app/login.php"
+        url = "http://10.210.0.60/prova_app/login.php"
 
         dati = {
             "username": username,

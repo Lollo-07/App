@@ -10,6 +10,7 @@ from kivymd.uix.button import MDRectangleFlatButton
 from threading import Thread
 from kivy.clock import Clock
 from kivy.metrics import dp
+from kivy.app import App
 
 import requests
 from config.sessione import Sessione
@@ -17,8 +18,8 @@ from config.sessione import Sessione
 
 class SchermataTransazioni(Screen):
 
-    url_api = "http://192.168.1.11/prova_app/transazioni.php"
-    url_categorie = "http://192.168.1.11/prova_app/categorie.php"
+    url_api = "http://10.210.0.60/prova_app/transazioni.php"
+    url_categorie = "http://10.210.0.60/prova_app/categorie.php"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -403,3 +404,9 @@ class SchermataTransazioni(Screen):
         """Chiude il dialog"""
         if self.dialog:
             self.dialog.dismiss()
+            
+            
+    
+    def vai_al_login(self):
+        Sessione.logout()
+        App.get_running_app().root.current = "login"

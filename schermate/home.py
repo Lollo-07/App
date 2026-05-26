@@ -14,7 +14,7 @@ from config.sessione import Sessione
 
 class SchermataHome(Screen):
 
-    url_api = "http://192.168.1.11/prova_app/categorie.php"
+    url_api = "http://10.210.0.60/prova_app/categorie.php"
 
     def on_pre_enter(self):
         if not Sessione.logged:
@@ -166,4 +166,5 @@ class SchermataHome(Screen):
         
 
     def vai_al_login(self):
+        Sessione.logout()
         App.get_running_app().root.current = "login"
