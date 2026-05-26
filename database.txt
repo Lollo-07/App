@@ -18,7 +18,7 @@ CREATE TABLE Transazioni (
     descrizione VARCHAR(200) NOT NULL,
     prezzo DECIMAL(10,2) NOT NULL,
     metodoPagamento VARCHAR(20) NOT NULL CHECK (metodoPagamento IN ('Contanti', 'Bancomat', 'PayPal', 'ApplePay', 'Bonifico', 'Satispay', 'Altro')),
-    data DATE NOT NULL CHECK (data <= CURRENT_DATE),
+    data DATE NOT NULL,
     idUtente INT NOT NULL,
     idCategoria INT NOT NULL,
     
