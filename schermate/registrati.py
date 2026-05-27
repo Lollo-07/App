@@ -32,7 +32,11 @@ class SchermataRegistrati(Screen):
 
     def _registrati_thread(self, nome, cognome, username, password):
         """Esegue la richiesta HTTP in background"""
+<<<<<<< HEAD
         url = "http://127.0.0.1/prova_app/registrati.php"
+=======
+        url = "http://10.210.0.60/prova_app/registrati.php"
+>>>>>>> 410e6f8cfc18893ab6f1e7b99ad860deb155f192
 
         dati = {
             "nome": nome,
