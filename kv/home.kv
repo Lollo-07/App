@@ -1,0 +1,155 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+#:import GraficoTorta schermate.home.GraficoTorta
+
+<SchermataHome>:
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.08, 0.08, 0.12, 1
+
+        # ── HEADER ──────────────────────────────────────────
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, None
+            height: dp(64)
+            padding: [dp(16), dp(10), dp(16), dp(10)]
+            md_bg_color: 0.13, 0.13, 0.18, 1
+            spacing: dp(10)
+
+            MDIcon:
+                icon: "home"
+                theme_text_color: "Custom"
+                text_color: 0.39, 0.51, 1, 1
+                font_size: sp(28)
+                size_hint_x: None
+                width: dp(32)
+
+            MDLabel:
+                text: "Home"
+                font_style: "H6"
+                bold: True
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
+            Widget:
+
+            MDIconButton:
+                icon: "logout"
+                theme_text_color: "Custom"
+                text_color: 0.6, 0.6, 0.6, 1
+                ripple_color: 1, 1, 1, 0.15
+                on_press: root.vai_al_login()
+
+        # ── CONTENUTO SCROLLABILE ────────────────────────────
+        ScrollView:
+            size_hint: 1, 1
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(16)
+                spacing: dp(14)
+
+                # ── Riepilogo mese ──────────────────────────
+                MDCard:
+                    size_hint_y: None
+                    height: dp(90)
+                    radius: [16]
+                    md_bg_color: 0.13, 0.13, 0.18, 1
+                    padding: dp(16)
+                    elevation: 3
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(4)
+
+                        MDLabel:
+                            text: "Riepilogo del mese"
+                            font_style: "Caption"
+                            theme_text_color: "Custom"
+                            text_color: 0.55, 0.55, 0.55, 1
+                            bold: True
+
+                        MDLabel:
+                            id: label_totale
+                            text: "— €"
+                            font_style: "H4"
+                            bold: True
+                            theme_text_color: "Custom"
+                            text_color: 0.39, 0.51, 1, 1
+
+                # ── Grafico a torta ─────────────────────────
+                MDCard:
+                    size_hint_y: None
+                    height: dp(240)
+                    radius: [16]
+                    md_bg_color: 0.13, 0.13, 0.18, 1
+                    padding: dp(12)
+                    elevation: 3
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(8)
+
+                        GraficoTorta:
+                            id: grafico_torta
+                            size_hint_x: 0.55
+
+                        # Legenda
+                        ScrollView:
+                            size_hint_x: 0.45
+
+                            MDBoxLayout:
+                                id: legenda_categorie
+                                orientation: "vertical"
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: dp(6)
+                                padding: [dp(4), dp(8), 0, dp(8)]
+
+                # ── Campo aggiungi spesa ────────────────────
+                MDCard:
+                    size_hint_y: None
+                    height: dp(70)
+                    radius: [16]
+                    md_bg_color: 0.13, 0.13, 0.18, 1
+                    padding: [dp(16), dp(8), dp(16), dp(8)]
+                    elevation: 3
+                    on_release: root.aggiungi_spesa()
+                    ripple_behavior: True
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(12)
+
+                        MDIcon:
+                            icon: "plus-circle-outline"
+                            theme_text_color: "Custom"
+                            text_color: 0.39, 0.51, 1, 1
+                            font_size: sp(28)
+                            size_hint_x: None
+                            width: dp(32)
+
+                        MDLabel:
+                            text: "Vuoi aggiungere una spesa?"
+                            theme_text_color: "Custom"
+                            text_color: 0.60, 0.60, 0.65, 1
+                            font_style: "Body1"
+
+                # ── Ultime 5 transazioni ────────────────────
+                MDLabel:
+                    text: "Ultime transazioni"
+                    font_style: "Subtitle1"
+                    bold: True
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(28)
+
+                MDBoxLayout:
+                    id: ultime_transazioni
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(10)

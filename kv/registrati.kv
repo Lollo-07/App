@@ -1,0 +1,127 @@
+<SchermataRegistrati>:
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(12)
+        md_bg_color: 0.08, 0.08, 0.12, 1
+
+        Widget:
+            size_hint_y: 0.15
+
+        Label:
+            text: "REGISTRATI"
+            font_size: sp(32)
+            size_hint_y: None
+            height: dp(60)
+            halign: "center"
+            color: 1, 1, 1, 1
+
+        MDTextField:
+            id: nome_input
+            hint_text: "Nome"
+            mode: "fill"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5}
+            line_color_normal: 1, 1, 1, 1
+            line_color_focus: 0.39, 0.51, 1, 1
+            text_color_normal: 1, 1, 1, 1
+            text_color_focus: 1, 1, 1, 1
+            hint_text_color_normal: 0.7, 0.7, 0.7, 1
+            hint_text_color_focus: 0.39, 0.51, 1, 1
+            fill_color_normal: 0.13, 0.13, 0.18, 1
+            fill_color_focus: 0.18, 0.18, 0.23, 1
+
+        MDTextField:
+            id: cognome_input
+            hint_text: "Cognome"
+            mode: "fill"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5}
+            line_color_normal: 1, 1, 1, 1
+            line_color_focus: 0.39, 0.51, 1, 1
+            text_color_normal: 1, 1, 1, 1
+            text_color_focus: 1, 1, 1, 1
+            hint_text_color_normal: 0.7, 0.7, 0.7, 1
+            hint_text_color_focus: 0.39, 0.51, 1, 1
+            fill_color_normal: 0.13, 0.13, 0.18, 1
+            fill_color_focus: 0.18, 0.18, 0.23, 1
+
+        MDTextField:
+            id: username_input
+            hint_text: "Username"
+            mode: "fill"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5}
+            line_color_normal: 1, 1, 1, 1
+            line_color_focus: 0.39, 0.51, 1, 1
+            text_color_normal: 1, 1, 1, 1
+            text_color_focus: 1, 1, 1, 1
+            hint_text_color_normal: 0.7, 0.7, 0.7, 1
+            hint_text_color_focus: 0.39, 0.51, 1, 1
+            fill_color_normal: 0.13, 0.13, 0.18, 1
+            fill_color_focus: 0.18, 0.18, 0.23, 1
+
+        MDTextField:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            mode: "fill"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5}
+            line_color_normal: 1, 1, 1, 1
+            line_color_focus: 0.39, 0.51, 1, 1
+            text_color_normal: 1, 1, 1, 1
+            text_color_focus: 1, 1, 1, 1
+            hint_text_color_normal: 0.7, 0.7, 0.7, 1
+            hint_text_color_focus: 0.39, 0.51, 1, 1
+            fill_color_normal: 0.13, 0.13, 0.18, 1
+            fill_color_focus: 0.18, 0.18, 0.23, 1
+
+        Widget:
+            size_hint_y: 0.1
+
+        MDRaisedButton:
+            text: "REGISTRATI"
+            size_hint: 0.8, None
+            height: dp(50)
+            pos_hint: {"center_x": 0.5}
+            md_bg_color: 0.39, 0.51, 1, 1
+            ripple_color: 1, 1, 1, 0.2
+            font_size: sp(15)
+            on_press: root.registrati()
+
+        Widget:
+            size_hint_y: 0.1
+
+        MDBoxLayout:
+            size_hint: 1, None
+            height: dp(40)
+            spacing: dp(4)
+
+            Widget:
+
+            MDLabel:
+                text: "Hai già un account?"
+                halign: "right"
+                size_hint_x: None
+                width: dp(160)
+                theme_text_color: "Custom"
+                text_color: 0.6, 0.6, 0.6, 1
+                font_style: "Body1"
+
+            MDTextButton:
+                text: "Accedi"
+                theme_text_color: "Custom"
+                text_color: 0.39, 0.51, 1, 1
+                ripple_color: 0.39, 0.51, 1, 0.2
+                font_style: "Body1"
+                bold: True
+                size_hint_x: None
+                width: dp(70)
+                padding: [0, 0, 0, 8]
+                on_press: root.vai_al_login()
+
+            Widget:
+
+        Widget:
+            size_hint_y: 0.15
