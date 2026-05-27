@@ -7,11 +7,6 @@ from config.sessione import Sessione
 
 
 class SchermataLogin(Screen):
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 410e6f8cfc18893ab6f1e7b99ad860deb155f192
     def on_enter(self):
         Clock.schedule_once(self.clear_fields)
 
@@ -27,26 +22,11 @@ class SchermataLogin(Screen):
             print("Compila tutti i campi!")
             return
 
-<<<<<<< HEAD
         Thread(target=self._login_thread, args=(username, password)).start()
 
     def _login_thread(self, username, password):
         url = "http://127.0.0.1/prova_app/login.php"
         dati = {"username": username, "password": password}
-=======
-        # Avvia la richiesta in un thread separato
-        thread = Thread(target=self._login_thread, args=(username, password))
-        thread.start()
-
-    def _login_thread(self, username, password):
-        """Esegue la richiesta HTTP in background"""
-        url = "http://10.210.0.60/prova_app/login.php"
-
-        dati = {
-            "username": username,
-            "password": password
-        }
->>>>>>> 410e6f8cfc18893ab6f1e7b99ad860deb155f192
 
         try:
             risposta = requests.post(url, json=dati, timeout=10)
@@ -60,21 +40,9 @@ class SchermataLogin(Screen):
                         json_data["username"],
                         password
                     )
-<<<<<<< HEAD
                     Clock.schedule_once(lambda dt: self._vai_a_home(), 0)
                 else:
                     print("Login errato")
-=======
-
-                    print("Benvenuto")
-
-                    # Cambia schermata dal thread principale
-                    Clock.schedule_once(lambda dt: self._vai_a_home(), 0)
-
-                else:
-                    print("Login errato")
-
->>>>>>> 410e6f8cfc18893ab6f1e7b99ad860deb155f192
             else:
                 print("Errore server:", risposta.status_code)
 
@@ -82,7 +50,6 @@ class SchermataLogin(Screen):
             print("Errore richiesta:", e)
 
     def _vai_a_home(self):
-<<<<<<< HEAD
         self.manager.current = "main_container"
 
         # Seleziona il tab Home dopo che il layout è pronto
@@ -119,10 +86,3 @@ class SchermataLogin(Screen):
 
     def vai_al_registrati(self):
         self.manager.current = "registrati"
-=======
-        """Cambia schermata (deve essere chiamato dal thread principale)"""
-        self.manager.current = "main_container"
-
-    def vai_al_registrati(self):
-        self.manager.current = "registrati"
->>>>>>> 410e6f8cfc18893ab6f1e7b99ad860deb155f192
