@@ -1,0 +1,27 @@
+CREATE TABLE Utente (
+    idUtente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(20) NOT NULL,
+    cognome VARCHAR(20) NOT NULL,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Categorie (
+    idCategoria INT AUTO_INCREMENT PRIMARY KEY,
+    idUtente INT,
+    categoria VARCHAR(20) NOT NULL,
+    FOREIGN KEY (idUtente) REFERENCES Utente(idUtente)
+);
+
+CREATE TABLE Transazioni (
+    idTransazioni INT AUTO_INCREMENT PRIMARY KEY,
+    descrizione VARCHAR(200) NOT NULL,
+    prezzo DECIMAL(10,2) NOT NULL,
+    metodoPagamento VARCHAR(20) NOT NULL CHECK (metodoPagamento IN ('Contanti', 'Bancomat', 'PayPal', 'ApplePay', 'Bonifico', 'Satispay', 'Altro')),
+    data DATE NOT NULL,
+    idUtente INT NOT NULL,
+    idCategoria INT NOT NULL,
+    
+    FOREIGN KEY (idUtente) REFERENCES Utente(idUtente),
+    FOREIGN KEY (idCategoria) REFERENCES Categorie(idCategoria)
+);

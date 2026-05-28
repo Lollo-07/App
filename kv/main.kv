@@ -1,0 +1,37 @@
+ScreenManager:
+    id: main_manager
+
+    SchermataLogin:
+        name: "login"
+
+    SchermataRegistrati:
+        name: "registrati"
+
+    Screen:
+        name: "main_container"
+
+        MDBottomNavigation:
+            id: bottom_nav
+            selected_color_background: 0.39, 0.51, 1, 0.15
+            on_switch_tabs: app.on_switch_tabs(*args)
+
+            MDBottomNavigationItem:
+                name: "categorie"
+                text: "Categorie"
+                icon: "view-list"
+
+                SchermataCategorie:
+
+            MDBottomNavigationItem:
+                name: "home"
+                text: "Home"
+                icon: "home"
+
+                SchermataHome:
+
+            MDBottomNavigationItem:
+                name: "transazioni"
+                text: "Transazioni"
+                icon: "cash"
+
+                SchermataTransazioni:

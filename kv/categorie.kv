@@ -1,0 +1,63 @@
+<SchermataCategorie>:
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.078, 0.078, 0.122, 1
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, None
+            height: dp(64)
+            padding: [dp(16), dp(10), dp(16), dp(10)]
+            md_bg_color: 0.10, 0.10, 0.16, 1
+            spacing: dp(10)
+
+            MDIcon:
+                icon: "view-dashboard"
+                theme_text_color: "Custom"
+                text_color: 0.39, 0.31, 1, 1
+                font_size: sp(28)
+                size_hint_x: None
+                width: dp(32)
+
+            MDLabel:
+                text: "Categorie"
+                font_style: "H6"
+                bold: True
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
+            Widget:
+
+            MDIconButton:
+                icon: "logout"
+                theme_text_color: "Custom"
+                text_color: 0.6, 0.6, 0.6, 1
+                ripple_color: 1, 1, 1, 0.15
+                on_press: root.vai_al_login()
+
+        ScrollView:
+            size_hint: 1, 1
+
+            GridLayout:
+                id: contenitore
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(12)
+                padding: dp(16)
+
+        MDBoxLayout:
+            size_hint: 1, None
+            height: dp(80)
+            padding: [dp(16), dp(12), dp(16), dp(12)]
+            md_bg_color: 0.10, 0.10, 0.16, 1
+
+            MDRaisedButton:
+                text: "  AGGIUNGI CATEGORIA"
+                icon: "plus"
+                size_hint_x: 1
+                height: dp(50)
+                md_bg_color: 0.39, 0.31, 1, 1
+                ripple_color: 1, 1, 1, 0.2
+                font_size: sp(14)
+                on_press: root.aggiungi_categoria()

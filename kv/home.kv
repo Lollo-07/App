@@ -1,0 +1,250 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+#:import GraficoTorta schermate.home.GraficoTorta
+
+<SchermataHome>:
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.078, 0.078, 0.122, 1
+
+        # ── HEADER ──────────────────────────────────────────
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, None
+            height: dp(72)
+            padding: [dp(12), dp(6), dp(16), dp(6)]
+            md_bg_color: 0.10, 0.10, 0.16, 1
+            spacing: dp(10)
+
+            Image:
+                source: "logo.png"
+                size_hint_x: None
+                width: dp(190)
+                fit_mode: "contain"
+
+            Widget:
+
+            MDIconButton:
+                icon: "logout"
+                theme_text_color: "Custom"
+                text_color: 0.5, 0.5, 0.6, 1
+                ripple_color: 0.39, 0.31, 1, 0.2
+                on_press: root.vai_al_login()
+
+        # ── CONTENUTO SCROLLABILE ────────────────────────────
+        ScrollView:
+            size_hint: 1, 1
+
+            MDBoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(16)
+                spacing: dp(14)
+
+                # ── Riepilogo ───────────────────────────────
+                MDCard:
+                    size_hint_y: None
+                    height: dp(130)
+                    radius: [16]
+                    md_bg_color: 0.10, 0.10, 0.16, 1
+                    padding: dp(16)
+                    elevation: 4
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(8)
+
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            height: dp(20)
+                            spacing: dp(4)
+
+                            MDLabel:
+                                id: label_riepilogo_titolo
+                                text: "Riepilogo del mese"
+                                font_style: "Caption"
+                                theme_text_color: "Custom"
+                                text_color: 0.50, 0.50, 0.60, 1
+                                bold: True
+
+                        MDLabel:
+                            id: label_totale
+                            text: "— €"
+                            font_style: "H4"
+                            bold: True
+                            theme_text_color: "Custom"
+                            text_color: 0.39, 0.31, 1, 1
+                            size_hint_y: None
+                            height: dp(48)
+
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            height: dp(30)
+                            spacing: dp(6)
+
+                            MDRaisedButton:
+                                id: btn_riepilogo_settimana
+                                text: "7g"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.15, 0.15, 0.22, 1
+                                on_press: root.imposta_intervallo_riepilogo("settimana")
+
+                            MDRaisedButton:
+                                id: btn_riepilogo_mese
+                                text: "Mese"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.39, 0.31, 1, 1
+                                on_press: root.imposta_intervallo_riepilogo("mese")
+
+                            MDRaisedButton:
+                                id: btn_riepilogo_anno
+                                text: "Anno"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.15, 0.15, 0.22, 1
+                                on_press: root.imposta_intervallo_riepilogo("anno")
+
+                            MDRaisedButton:
+                                id: btn_riepilogo_tutto
+                                text: "Tutto"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.15, 0.15, 0.22, 1
+                                on_press: root.imposta_intervallo_riepilogo("tutto")
+
+                # ── Grafico a torta ─────────────────────────
+                MDCard:
+                    size_hint_y: None
+                    height: dp(280)
+                    radius: [16]
+                    md_bg_color: 0.10, 0.10, 0.16, 1
+                    padding: dp(12)
+                    elevation: 4
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(8)
+
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            height: dp(30)
+                            spacing: dp(6)
+
+                            MDRaisedButton:
+                                id: btn_grafico_settimana
+                                text: "7g"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.15, 0.15, 0.22, 1
+                                on_press: root.imposta_intervallo_grafico("settimana")
+
+                            MDRaisedButton:
+                                id: btn_grafico_mese
+                                text: "Mese"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.39, 0.31, 1, 1
+                                on_press: root.imposta_intervallo_grafico("mese")
+
+                            MDRaisedButton:
+                                id: btn_grafico_anno
+                                text: "Anno"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.15, 0.15, 0.22, 1
+                                on_press: root.imposta_intervallo_grafico("anno")
+
+                            MDRaisedButton:
+                                id: btn_grafico_tutto
+                                text: "Tutto"
+                                font_size: sp(11)
+                                size_hint_x: 0.25
+                                height: dp(28)
+                                md_bg_color: 0.15, 0.15, 0.22, 1
+                                on_press: root.imposta_intervallo_grafico("tutto")
+
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            spacing: dp(8)
+
+                            GraficoTorta:
+                                id: grafico_torta
+                                size_hint_x: 0.55
+
+                            ScrollView:
+                                size_hint_x: 0.45
+
+                                MDBoxLayout:
+                                    id: legenda_categorie
+                                    orientation: "vertical"
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    spacing: dp(6)
+                                    padding: [dp(4), dp(8), 0, dp(8)]
+
+                # ── Campo aggiungi spesa ────────────────────
+                MDCard:
+                    size_hint_y: None
+                    height: dp(70)
+                    radius: [16]
+                    md_bg_color: 0.10, 0.10, 0.16, 1
+                    padding: [dp(16), dp(8), dp(16), dp(8)]
+                    elevation: 4
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(12)
+
+                        MDIcon:
+                            icon: "plus-circle-outline"
+                            theme_text_color: "Custom"
+                            text_color: 0.39, 0.31, 1, 1
+                            font_size: sp(28)
+                            size_hint_x: None
+                            width: dp(32)
+
+                        MDLabel:
+                            text: "Vuoi aggiungere una spesa?"
+                            theme_text_color: "Custom"
+                            text_color: 0.55, 0.55, 0.65, 1
+                            font_style: "Body1"
+                            on_touch_down: if self.collide_point(*args[1].pos): root.aggiungi_spesa()
+
+                        MDIconButton:
+                            id: btn_vocale_home
+                            icon: "microphone"
+                            theme_text_color: "Custom"
+                            text_color: 0.0, 0.75, 0.95, 1
+                            size_hint_x: None
+                            width: dp(48)
+                            on_press: root.aggiungi_spesa_vocale()
+
+                # ── Ultime 5 transazioni ────────────────────
+                MDLabel:
+                    text: "Ultime transazioni"
+                    font_style: "Subtitle1"
+                    bold: True
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(28)
+
+                MDBoxLayout:
+                    id: ultime_transazioni
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(10)
