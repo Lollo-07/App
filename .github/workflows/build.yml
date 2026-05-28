@@ -33,8 +33,19 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython
 
+      - name: Accetta licenze Android SDK
+        run: |
+          mkdir -p ~/.android
+          echo "count=0" > ~/.android/repositories.cfg
+          yes | sdkmanager --licenses || true
+        env:
+          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
       - name: Build APK (debug)
-        run: buildozer android debug
+        run: |
+          yes | buildozer android debug
+        env:
+          JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
 
       - name: Salva l'APK come artefatto
         uses: actions/upload-artifact@v4
